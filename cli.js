@@ -63,6 +63,10 @@ export async function app(args) {
         case 'list':
             handleList(subcommandArgs);
             break;
+        case 'help':
+        case '--help':
+            displayHelp();
+            break;
         default:
             console.error(`Unknown subcommand: ${subcommand}`);
             process.exit(1);
@@ -142,6 +146,33 @@ function displayTasks(tasks) {
             console.log(`[ID: ${task.id}] ${task.description} - ${task.status}`);
         });
     }
+}
+
+function displayHelp() {
+    console.log(`
+Task CLI - Command Line Tool for Managing Tasks
+
+Usage:
+  task <subcommand> [args]
+
+Subcommands:
+  add <description>               Add a new task with the given description.
+  update <id> <description>       Update the task with the given ID.
+  delete <id>                     Delete the task with the given ID.
+  mark-in-progress <id>           Mark the task with the given ID as in progress.
+  mark-done <id>                  Mark the task with the given ID as done.
+  list [status]                   List all tasks, optionally filtered by status (todo, in-progress, done).
+  help, --help                    Display this help message.
+
+Examples:
+  task add "Write unit tests"
+  task update 1 "Write integration tests"
+  task delete 1
+  task mark-in-progress 2
+  task mark-done 2
+  task list
+  task list done
+    `);
 }
 
 // Expose tasks for testing
